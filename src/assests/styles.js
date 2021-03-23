@@ -91,5 +91,47 @@ export default StyleSheet.create({
   },
   hintButton: {
     backgroundColor: '#fff'
-  }
+  },
+  activityIndicatorContainer:{
+    backgroundColor: "#fff",
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+},
+  reload:{
+    flexDirection:'row',
+    width:100,
+    height:40,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'#FFEFD5',
+    borderRadius:8,
+    marginTop:110,
+    borderWidth:1
+  },
+  reloadText:{
+    fontSize: 15,
+    fontWeight: "800",
+    color:"#900",
+    alignSelf:'center',
+   },
+   text: {
+    marginTop: 20,
+    fontWeight:'bold',
+    alignSelf:'center'
+ },
+  headerText:{
+    marginTop: 20,
+    fontSize:22,
+    fontWeight:'bold',
+    alignSelf:'center'
+  },
+  textinput:{
+    width: 200,
+    borderWidth:0.5,
+    borderColor:'#900',
+    borderRadius:8,
+    alignSelf:'center',
+    marginTop:30 
+}
 })
