@@ -12,7 +12,8 @@ export default StyleSheet.create({
       ios: {
         shadowColor: '#000',
         shadowOpacity: 0.2,
-        shadowOffset: { width: 0, height: 1 }
+        shadowOffset: { width: 0, height: 1 },
+        zIndex: 15
       },
       android: {
         elevation: 3
@@ -33,7 +34,7 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   toolbarIcon: {
     color: '#900'
@@ -133,5 +134,11 @@ export default StyleSheet.create({
     borderRadius:8,
     alignSelf:'center',
     marginTop:30 
-}
+},
+activityIndicatorContainer:{
+  backgroundColor: "#fff",
+  alignItems: 'center',
+  justifyContent: 'center',
+  flex: 1,
+},
 })

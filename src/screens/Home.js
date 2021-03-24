@@ -6,16 +6,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const items = [
     // name key is must. It is to show the text in front
-    {id: 1, name: 'angellist'},
-    {id: 2, name: 'codepen'},
-    {id: 3, name: 'envelope'},
-    {id: 4, name: 'etsy'},
-    {id: 5, name: 'facebook'},
-    {id: 6, name: 'foursquare'},
-    {id: 7, name: 'github-alt'},
-    {id: 8, name: 'github'},
-    {id: 9, name: 'gitlab'},
-    {id: 10, name: 'instagram'},
+    {id: 1, name: 'Resturant Bill'},
+    {id: 2, name: 'Tution'},
+    {id: 3, name: 'Rent'},
+    {id: 4, name: 'Subscription Fee'},
+    {id: 5, name: 'Netflix'},
+    {id: 6, name: 'Credit Card'},
+    {id: 7, name: 'Shopping'},
+    {id: 8, name: 'Movie'},
+    {id: 9, name: 'Dinner'},
+    {id: 10, name: 'Extra'},
   ];
 
   const Home =() => {
@@ -23,17 +23,9 @@ const items = [
     const [value, setValue] =  useState(0)
     const [total, setTotalNumber] = useState(0);
     const [category, setCategory] = useState('')
+    const [newCategory, newCategorySet] = useState('')
     // const [value, setValue] =  useState(0)
     // const prevNum = useRef();
-//    function usePrevious(value) {
-//   const ref = useRef();
-//   useEffect(() => {
-//     ref.current = value;
-//   });
-//   return ref.current;
-// }
-
-
 
     // const usePreviousValue = (value) => {
     //   const ref = useRef();
@@ -44,25 +36,34 @@ const items = [
     //   return ref.current;
     // };
 
-    // useEffect(() => {
-    //     prevNum.current = value;
-    //     setPreviousNumber(prevNum.current);
-    //     console.log('NEW NUMBER',previousNumber)
-    //     AsyncStorage.setItem('Prev', prevNum.current)
-    // });
-
     const getData= async ()=>{
+      // AsyncStorage.clear();
       setValue(value);
       setPreviousNumber(value);
-      console.log('previousNumber',previousNumber)
-      console.log('category',category);
+      
       var costs = []
       costs.push({value});
-      var arr = [{costs: [...costs], ...category}]
-      console.log('costs',arr);
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"];
+
+      const d = new Date();
+      var arr = [{costs: [...costs], ...category,month:monthNames[d.getMonth()]}]
+
+      const prevArr =[];
+      if (previousNumber !== 0){
+        var prevItems = await AsyncStorage.getItem('COSTLIST');
+        prevArr.push(JSON.parse(prevItems))
+        console.log('check prev data',prevArr[0]);
+        var finalArr = [...arr,prevArr[0]]
+      } else{
+        finalArr = {"costs":[{"value":"10"}],"id":11,"name":"DEMO"}
+      }
+
+      
+      console.log('costs',finalArr);
         try {
-            await AsyncStorage.setItem('COSTLIST', JSON.stringify(arr))
-            // await AsyncStorage.setItem('PREVNUMBER', newNumber)
+            await AsyncStorage.setItem('COSTLIST', JSON.stringify(finalArr))
+            // await AsyncStorage.setItem('PREVNUMBER', newNumber);
             alert('Data successfully saved')
           } catch (e) {
             alert('Failed to save the data to the storage')
@@ -70,11 +71,24 @@ const items = [
 
           const totalValue =  await AsyncStorage.getItem('COSTLIST')
           console.log('PrevNUMBER',totalValue)
+          var newVal = JSON.parse(totalValue)
+          const res = newVal.concat().reduce((total, { costs = [] }) => {
+            costs.forEach(({ value = 0 }) => total += +value);
+            return total;
+          }, 0);
 
-          const total = parseInt(previousNumber) + parseInt(value)
-          setTotalNumber(total);
-          console.log('new',total);
+          // const total = parseInt(previousNumber) + parseInt(value)
+          setTotalNumber(parseInt(res));
+          console.log('new',res);
     
+     }
+
+     const getCategory= async (item) =>{
+      console.log('getCategory',item)
+      // const totalValue =  await AsyncStorage.getItem('COSTLIST')
+      // console.log('PrevNUMBER',totalValue)
+      // const matchedItems = await totalValue.find(element => element.name === item)
+      // console.log('find>>',matchedItems)
      }
     //  const [value, setValue] =  useState(0)
    //  const prevValue = usePreviousValue(value)
@@ -84,8 +98,9 @@ const items = [
         <Text style={styles.headerText}>Total Expense: {total}</Text>
         <Text style={styles.text}>Enter expenses and categorize them.</Text>
         <View style={{marginTop:20,}}>
+        <Text style={styles.text}>Search Category from here:</Text>
         <SearchableDropdown
-          onTextChange={(category) => console.log(category)}
+          onTextChange={(category) => getCategory(category)}
           // Listner on the searchable input
           onItemSelect={(category) => setCategory(category)}
           // Called after the selection
@@ -115,7 +130,7 @@ const items = [
           itemsContainerStyle={{
             // Items container style you can pass maxHeight
             // To restrict the items dropdown hieght
-            maxHeight: '60%',
+            maxHeight: '50%',
           }}
           items={items}
           // Mapping of item array
@@ -128,6 +143,7 @@ const items = [
           underlineColorAndroid="transparent"
           // To remove the underline from the android input
         />
+        <Text style={styles.text}>Or</Text>
           </View>
           {/* <View style={styles.textinput}>    
             <TextInput
@@ -137,6 +153,14 @@ const items = [
                 defaultValue={category}
             />
           </View> */}
+          <View style={styles.textinput}>    
+            <TextInput
+                style={{height: 40, paddingHorizontal:20}}
+                placeholder="Enter New Category"
+                onChangeText={value => newCategorySet(value)}
+                // defaultValue={value}
+            />
+          </View>
           <View style={styles.textinput}>    
             <TextInput
                 style={{height: 40, paddingHorizontal:20}}
