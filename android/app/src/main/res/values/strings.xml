@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MoneyExpenses</string>
+    <style name="AppTheme.Launcher">
+    <item name="android:windowBackground">@drawable/screen</item>
+  </style>
 </resources>
+

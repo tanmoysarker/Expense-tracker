@@ -1,0 +1,11 @@
+
+<!-- android/app/src/main/res/drawable/launch_screen.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:opacity="opaque">
+  <item android:drawable="@color/white" />
+  <item>
+    <bitmap android:src="@drawable/screen" android:gravity="center|clip_horizontal" />
+  </item>
+</layer-list>

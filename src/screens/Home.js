@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect, useRef }  from 'react';
 import {Text, View, TextInput, TouchableOpacity } from 'react-native';
 import styles from '../assests/styles'
 import SearchableDropdown from 'react-native-searchable-dropdown';
@@ -18,20 +18,70 @@ const items = [
     {id: 10, name: 'instagram'},
   ];
 
-export default Home =() => {
-    const [text, setText] = useState('');
+  const Home =() => {
+    const [previousNumber, setPreviousNumber] = useState(0);
+    const [value, setValue] =  useState(0)
+    const [total, setTotalNumber] = useState(0);
     const [category, setCategory] = useState('')
+    // const [value, setValue] =  useState(0)
+    // const prevNum = useRef();
+//    function usePrevious(value) {
+//   const ref = useRef();
+//   useEffect(() => {
+//     ref.current = value;
+//   });
+//   return ref.current;
+// }
 
-   const savaData = () => {
-        console.log('Pressed')
-        console.log('category',category);
-        console.log('text',text);
-    }
 
 
+    // const usePreviousValue = (value) => {
+    //   const ref = useRef();
+    //   useEffect(() => {
+    //     ref.current = value;
+    //   },[value]);
+    //   console.log('NEW NUMBER ref',ref.current)
+    //   return ref.current;
+    // };
+
+    // useEffect(() => {
+    //     prevNum.current = value;
+    //     setPreviousNumber(prevNum.current);
+    //     console.log('NEW NUMBER',previousNumber)
+    //     AsyncStorage.setItem('Prev', prevNum.current)
+    // });
+
+    const getData= async ()=>{
+      setValue(value);
+      setPreviousNumber(value);
+      console.log('previousNumber',previousNumber)
+      console.log('category',category);
+      var costs = []
+      costs.push({value});
+      var arr = [{costs: [...costs], ...category}]
+      console.log('costs',arr);
+        try {
+            await AsyncStorage.setItem('COSTLIST', JSON.stringify(arr))
+            // await AsyncStorage.setItem('PREVNUMBER', newNumber)
+            alert('Data successfully saved')
+          } catch (e) {
+            alert('Failed to save the data to the storage')
+          }
+
+          const totalValue =  await AsyncStorage.getItem('COSTLIST')
+          console.log('PrevNUMBER',totalValue)
+
+          const total = parseInt(previousNumber) + parseInt(value)
+          setTotalNumber(total);
+          console.log('new',total);
+    
+     }
+    //  const [value, setValue] =  useState(0)
+   //  const prevValue = usePreviousValue(value)
+     
     return (
         <View style={{marginTop: 20,width:300,alignSelf:'center'}}>
-        <Text style={styles.headerText}>Total Expense: 4200</Text>
+        <Text style={styles.headerText}>Total Expense: {total}</Text>
         <Text style={styles.text}>Enter expenses and categorize them.</Text>
         <View style={{marginTop:20,}}>
         <SearchableDropdown
@@ -91,13 +141,13 @@ export default Home =() => {
             <TextInput
                 style={{height: 40, paddingHorizontal:20}}
                 placeholder="Expense amount..."
-                onChangeText={text => setText(text)}
+                onChangeText={value => setValue(value)}
                 keyboardType = 'number-pad'
-                defaultValue={text}
+                // defaultValue={value}
             />
           </View>
 
-          <TouchableOpacity onPress={()=>saveData()}>
+          <TouchableOpacity onPress={getData}>
           <View style={styles.activityIndicatorContainer}>
               <View style={styles.reload}>
              <Text style={styles.reloadText}>Add</Text>
@@ -109,3 +159,4 @@ export default Home =() => {
     )
 }
  
+export default Home;
