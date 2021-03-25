@@ -36,6 +36,18 @@ const items = [
     //   return ref.current;
     // };
 
+    // converting arr to obj
+    // const convertArrayToObject = (array, key) => {
+    //   const initialValue = {};
+    //   return array.reduce((obj, item) => {
+    //     return {
+    //       ...obj,
+    //       [item[key]]: item,
+    //     };
+    //   }, initialValue);
+    // };
+
+
     const getData= async ()=>{
       // AsyncStorage.clear();
       setValue(value);
@@ -52,9 +64,13 @@ const items = [
       const prevArr =[];
       if (previousNumber !== 0){
         var prevItems = await AsyncStorage.getItem('COSTLIST');
-        prevArr.push(JSON.parse(prevItems))
-        console.log('check prev data',prevArr[0]);
-        var finalArr = [...arr,prevArr[0]]
+        // prevArr.push(JSON.parse(prevItems))
+        // var convertedObj = convertArrayToObject(JSON.parse(prevItems))
+
+        console.log('check prev data',arr);
+        // var arr1=[{"costs":[{"value":"10"}],"id":11,"name":"DEMO"},{"costs":[{"value":"10"}],"id":11,"name":"DEMO"}]
+        var finalArr = arr.concat(JSON.parse(prevItems))
+        // var finalArr = [...arr]
       } else{
         finalArr = {"costs":[{"value":"10"}],"id":11,"name":"DEMO"}
       }
@@ -72,6 +88,7 @@ const items = [
           const totalValue =  await AsyncStorage.getItem('COSTLIST')
           console.log('PrevNUMBER',totalValue)
           var newVal = JSON.parse(totalValue)
+          
           const res = newVal.concat().reduce((total, { costs = [] }) => {
             costs.forEach(({ value = 0 }) => total += +value);
             return total;
@@ -184,3 +201,24 @@ const items = [
 }
  
 export default Home;
+
+
+
+// [
+//   {
+//     "costs":[{"value":"30"}],
+//     "id":1,"name":"Resturant Bill",
+//     "month":"March"
+//   },
+//   [
+//     {
+//     "costs":[{"value":"20"}],
+//     "id":1,"name":"Resturant Bill",
+//     "month":"March"
+//   },
+//   {"costs":[{"value":"10"}],
+//   "id":11,"name":"DEMO" 
+//    }
+//   ]
+
+// ]
