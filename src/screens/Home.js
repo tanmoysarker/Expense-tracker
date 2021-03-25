@@ -36,16 +36,6 @@ const items = [
     //   return ref.current;
     // };
 
-    // converting arr to obj
-    // const convertArrayToObject = (array, key) => {
-    //   const initialValue = {};
-    //   return array.reduce((obj, item) => {
-    //     return {
-    //       ...obj,
-    //       [item[key]]: item,
-    //     };
-    //   }, initialValue);
-    // };
 
 
     const getData= async ()=>{
@@ -68,9 +58,7 @@ const items = [
         // var convertedObj = convertArrayToObject(JSON.parse(prevItems))
 
         console.log('check prev data',arr);
-        // var arr1=[{"costs":[{"value":"10"}],"id":11,"name":"DEMO"},{"costs":[{"value":"10"}],"id":11,"name":"DEMO"}]
         var finalArr = arr.concat(JSON.parse(prevItems))
-        // var finalArr = [...arr]
       } else{
         finalArr = {"costs":[{"value":"10"}],"id":11,"name":"DEMO"}
       }
@@ -79,7 +67,6 @@ const items = [
       console.log('costs',finalArr);
         try {
             await AsyncStorage.setItem('COSTLIST', JSON.stringify(finalArr))
-            // await AsyncStorage.setItem('PREVNUMBER', newNumber);
             alert('Data successfully saved')
           } catch (e) {
             alert('Failed to save the data to the storage')
@@ -88,7 +75,7 @@ const items = [
           const totalValue =  await AsyncStorage.getItem('COSTLIST')
           console.log('PrevNUMBER',totalValue)
           var newVal = JSON.parse(totalValue)
-          
+
           const res = newVal.concat().reduce((total, { costs = [] }) => {
             costs.forEach(({ value = 0 }) => total += +value);
             return total;
@@ -107,8 +94,6 @@ const items = [
       // const matchedItems = await totalValue.find(element => element.name === item)
       // console.log('find>>',matchedItems)
      }
-    //  const [value, setValue] =  useState(0)
-   //  const prevValue = usePreviousValue(value)
      
     return (
         <View style={{marginTop: 20,width:300,alignSelf:'center'}}>
@@ -160,7 +145,7 @@ const items = [
           underlineColorAndroid="transparent"
           // To remove the underline from the android input
         />
-        <Text style={styles.text}>Or</Text>
+        {/* <Text style={styles.text}>Or</Text> */}
           </View>
           {/* <View style={styles.textinput}>    
             <TextInput
@@ -170,14 +155,14 @@ const items = [
                 defaultValue={category}
             />
           </View> */}
-          <View style={styles.textinput}>    
+          {/* <View style={styles.textinput}>    
             <TextInput
                 style={{height: 40, paddingHorizontal:20}}
                 placeholder="Enter New Category"
                 onChangeText={value => newCategorySet(value)}
                 // defaultValue={value}
             />
-          </View>
+          </View> */}
           <View style={styles.textinput}>    
             <TextInput
                 style={{height: 40, paddingHorizontal:20}}
@@ -202,23 +187,3 @@ const items = [
  
 export default Home;
 
-
-
-// [
-//   {
-//     "costs":[{"value":"30"}],
-//     "id":1,"name":"Resturant Bill",
-//     "month":"March"
-//   },
-//   [
-//     {
-//     "costs":[{"value":"20"}],
-//     "id":1,"name":"Resturant Bill",
-//     "month":"March"
-//   },
-//   {"costs":[{"value":"10"}],
-//   "id":11,"name":"DEMO" 
-//    }
-//   ]
-
-// ]
